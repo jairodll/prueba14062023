@@ -1,0 +1,49 @@
+package Analizadores;
+import java_cup.runtime.*;
+
+parser code {:
+public String resultado="";
+    public static LinkedList<TError> TablaES = new LinkedList<TError>(); 
+
+:}
+
+//------> Codigo para las acciones gramaticales
+action code
+{:
+:}
+
+/*--------------- 2da Area: Declaraciones -----------------------*/
+//------> declaracion de terminales 
+terminal mas,menos,por,div,para,parc;
+terminal String num;
+
+//------> declaracion de no terminales
+non terminal String INICIO,E;
+
+//----> precedencia de menor a mayor 
+precedence left mas, menos;
+precedence left por, div;
+
+start with INICIO;
+
+/*--------------- 3ra Area: Reglas Semanticas -----------------------*/
+INICIO::=E:a {: resultado=a; :};
+
+E::= E:a mas E:b {: int val1= Integer.parseInt(a);
+                    int val2= Integer.parseInt(b);
+                    int r = val1+val2;
+                    RESULT = String.valueOf(r); :}
+    |E:a menos E:b {: int val1= Integer.parseInt(a);
+                    int val2= Integer.parseInt(b);
+                    int r = val1-val2;
+                    RESULT = String.valueOf(r); :}
+    |E:a div E:b {: int val1= Integer.parseInt(a);
+                    int val2= Integer.parseInt(b);
+                    int r = val1/val2;
+                    RESULT = String.valueOf(r); :}
+    |E:a por E:b {: int val1= Integer.parseInt(a);
+                    int val2= Integer.parseInt(b);
+                    int r = val1*val2;
+                    RESULT = String.valueOf(r); :}
+    |para E:a {: RESULT = a; :} parc
+    |num:a {: RESULT = a; :};
